@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Time Chat</title>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=send" />
+</head>
+<body>
+    <div>
+        <input type="text" name="message" id="msg" placeholder="typing..." required>
+        <button id="send-msg">
+            <span class="material-symbols-outlined">send</span>
+        </button>
+        <div id="chat"></div>
+    </div>
+
+    <script type="module">
+        import {firebaseConfig} from './config.js';
+        import {getMsg} from './function.js';
+
+        firebase.initializeApp(firebaseConfig);
+        
+        let bhejdo = document.getElementById('send-msg');
+
+        bhejdo.addEventListener('click', async () => {
+            let message = document.getElementById('msg').value;
+            if (!message.trim()) return;
+
+            try {
+                await firebase.firestore().collection('chat').add({
+                    message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('msg').value = '';
+            } catch(e) {
+                console.error(`Error while sending message:`, e);
+            }
+        });
+        getMsg();
+    </script>
+</body>
+</html>
