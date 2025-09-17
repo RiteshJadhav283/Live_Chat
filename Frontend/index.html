@@ -1,45 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Time Chat</title>
+    <title>Chat</title>
+
+    <!-- cdn -> firebase-app, firebase-firestore -->
+    <!-- firebase app -->
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+
+    <!-- firestore -->
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=send" />
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_right" />
 </head>
+
 <body>
+        <div id="chat"></div>   
     <div>
-        <input type="text" name="message" id="msg" placeholder="typing..." required>
+        <!-- get user msg -->
+        <input type="text" name="message" id="msg" placeholder="typing...." value="" required>
         <button id="send-msg">
-            <span class="material-symbols-outlined">send</span>
+            <span class="material-symbols-outlined">
+                chevron_right
+            </span>
         </button>
-        <div id="chat"></div>
     </div>
+    
+    
+
+
 
     <script type="module">
+        //config firebase
         import {firebaseConfig} from './config.js';
         import {getMsg} from './function.js';
 
-        firebase.initializeApp(firebaseConfig);
-        
-        let bhejdo = document.getElementById('send-msg');
 
-        bhejdo.addEventListener('click', async () => {
+
+        //start/initialize the firebase app
+        firebase.initializeApp(firebaseConfig);
+
+
+        // Get message input element
+        const messageInput = document.getElementById('msg');
+
+        //get button
+        let sendButton = document.getElementById('send-msg');
+
+        /*
+        async function addMsg(text){
+            try {
+                let result = await firebase.firestore().collection('chat').add({ text });
+               if (result.exists){
+                 console.log('Message sent with ID: ', result.data.uid);
+               }
+            } catch (e) {
+                console.error('Error adding message: ', e);
+            }
+
+        }*/
+
+        //add event listener to button
+
+        sendButton.addEventListener('click', async () => {
             let message = document.getElementById('msg').value;
-            if (!message.trim()) return;
+            //methods/function
 
             try {
-                await firebase.firestore().collection('chat').add({
-                    message,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                document.getElementById('msg').value = '';
-            } catch(e) {
-                console.error(`Error while sending message:`, e);
+                console.log('inside the sendMsg function');
+                let docRef = await firebase.firestore().collection('chat').add({ message });
+                console.log('77');
+                // Firestore add() returns a DocumentReference, not a snapshot, so .exists and .data() are not available here
+                if (docRef) {
+                    console.log('80');
+
+                    console.log(`message sent! ${docRef.id}`);
+                }
+            } catch (e) {
+                console.log(`error while sending message! ${e}`);
             }
+
+
+            // Call the sendMsg function with the current input value
+            // let usermsg = document.getElementById('msg').value;
+            // await sendMsg(usermsg);
+            // document.getElementById('msg').value = '';
+
+
+            document.getElementById('msg').value = '';
         });
         getMsg();
+
+        
+        
+     
     </script>
 </body>
+
 </html>
