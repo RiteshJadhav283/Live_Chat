@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Chat App</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="material-icons">chat_bubble</i>
+                <span>ChatApp</span>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar" id="user-avatar">U</div>
+                <div class="user-info">
+                    <h3 id="current-user">User</h3>
+                    <p>Online</p>
+                </div>
+            </div>
+
+            <div class="online-users">
+                <h4>Online Now</h4>
+                <ul class="user-list" id="online-users">
+                    <li class="user-item">
+                        <span class="user-status"></span>
+                        <span>Loading users...</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <span id="chat-with">General Chat</span>
+                </div>
+                <div class="chat-actions">
+                    <button class="action-btn" title="Search">
+                        <i class="material-icons">search</i>
+                    </button>
+                    <button class="action-btn" title="More options">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages-container" id="chat-messages">
+                <!-- Messages will be added here dynamically -->
+                <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                    <span>Someone is typing</span>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <button class="attachment-btn" title="Attach file">
+                    <i class="material-icons">attach_file</i>
+                </button>
+                <button class="emoji-btn" title="Choose emoji">
+                    <i class="material-icons">emoji_emotions</i>
+                </button>
+                <textarea 
+                    id="message-input" 
+                    class="message-input" 
+                    placeholder="Type a message..."
+                    rows="1"
+                ></textarea>
+                <button id="send-button" class="send-btn" disabled>
+                    <i class="material-icons">send</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Message Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Message</h3>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <textarea id="edit-message-text" class="edit-message-input" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-edit" class="btn btn-secondary">Cancel</button>
+                <button id="save-edit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
